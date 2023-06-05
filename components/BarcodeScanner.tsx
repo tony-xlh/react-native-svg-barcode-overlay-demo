@@ -8,11 +8,11 @@ interface props {
 
 const  BarcodeScanner: React.FC<props> = (props: props) => {
   const reader = React.useRef<DCVBarcodeReader|null>();
-  const scanner = React.useRef<DCVCameraView|null>();
+  const camera = React.useRef<DCVCameraView|null>();
   React.useEffect(() => {
     (async () => {
       console.log("mounted");
-      console.log(scanner);
+      console.log(camera);
       try {
         await DCVBarcodeReader.initLicense("DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9");
       } catch (e) {
@@ -29,6 +29,8 @@ const  BarcodeScanner: React.FC<props> = (props: props) => {
       // If the camera is opened, the barcode reader will start the barcode decoding thread when you triggered the startScanning.
       // The barcode reader will scan the barcodes continuously before you trigger stopScanning.
       reader.current.startScanning();
+      //camera.current?.open();
+      //camera.current?.dispatcher.open();
       return async () => { //umount
         console.log("unmounted");
         if (reader.current) {
@@ -44,7 +46,7 @@ const  BarcodeScanner: React.FC<props> = (props: props) => {
      <DCVCameraView
       style={{flex: 1}}
       overlayVisible={false}
-      ref = {(ref)=>{scanner.current = ref}}
+      ref = {(ref)=>{camera.current = ref}}
     >
     </DCVCameraView>
   );
