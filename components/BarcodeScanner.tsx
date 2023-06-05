@@ -1,14 +1,22 @@
-import { DCVBarcodeReader, DCVCameraView } from "dynamsoft-capture-vision-react-native";
+import { BarcodeResult, DCVBarcodeReader, DCVCameraView } from "dynamsoft-capture-vision-react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
-function BarcodeScanner(): JSX.Element {
-  const reader = React.useRef<DCVBarcodeReader|undefined>();
+
+interface props {
+  onScanned?: (result:BarcodeResult[]) => void;
+}
+
+const  BarcodeScanner: React.FC<props> = (props: props) => {
+  const reader = React.useRef<DCVBarcodeReader|null>();
+  const scanner = React.useRef<DCVCameraView|null>();
   React.useEffect(() => {
     (async () => {
+      console.log("mounted");
+      console.log(scanner);
       try {
         await DCVBarcodeReader.initLicense("DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9");
       } catch (e) {
-          console.log(e);
+        console.log(e);
       }
       // Create a barcode reader instance.
       reader.current = await DCVBarcodeReader.createInstance();
@@ -22,6 +30,7 @@ function BarcodeScanner(): JSX.Element {
       // The barcode reader will scan the barcodes continuously before you trigger stopScanning.
       reader.current.startScanning();
       return async () => { //umount
+        console.log("unmounted");
         if (reader.current) {
           // Stop the barcode decoding thread when your component is unmount.
           await reader.current.stopScanning();
@@ -33,10 +42,11 @@ function BarcodeScanner(): JSX.Element {
   }, []);
   return (
      <DCVCameraView
-        style={{flex: 1}}
-        overlayVisible={false}
-      >
-      </DCVCameraView>
+      style={{flex: 1}}
+      overlayVisible={false}
+      ref = {(ref)=>{scanner.current = ref}}
+    >
+    </DCVCameraView>
   );
 }
 

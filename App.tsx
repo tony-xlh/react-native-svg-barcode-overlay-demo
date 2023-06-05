@@ -7,8 +7,11 @@
 
 import React from 'react';
 import {
+  Button,
   SafeAreaView,
   StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 import BarcodeScanner from './components/BarcodeScanner';
 
@@ -16,35 +19,35 @@ import BarcodeScanner from './components/BarcodeScanner';
 function App(): JSX.Element {
   const [useBarcodeScanner,setUseBarcodeScanner] = React.useState(false);
   const toggleBarcodeScanner = () => {
+    console.log(useBarcodeScanner);
     setUseBarcodeScanner(!useBarcodeScanner);
   }
   return (
-    <SafeAreaView>
-      {!useBarcodeScanner &&(
-        <BarcodeScanner></BarcodeScanner>
-      )}
-      <button onClick={toggleBarcodeScanner}>Scan Barcodes</button>
+    <SafeAreaView style={styles.container}>
+      <View style={{alignItems:"center"}}>
+        <Text style={styles.title}>
+          Dynamsoft Barcode Reader Demo
+        </Text>
+        {!useBarcodeScanner &&(
+          <BarcodeScanner></BarcodeScanner>
+        )}
+        <Button
+          title="Scan Barcodes"
+          onPress={() => toggleBarcodeScanner()}
+        />
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex:1,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  title:{
+    textAlign: 'center',
+    marginVertical: 8,
+  }
 });
 
 export default App;
