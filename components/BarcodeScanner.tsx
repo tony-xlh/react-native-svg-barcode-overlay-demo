@@ -1,6 +1,6 @@
 import { DCVBarcodeReader, DCVCameraView } from "dynamsoft-capture-vision-react-native";
 import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native/types";
+import { StyleSheet } from "react-native";
 function BarcodeScanner(): JSX.Element {
   const reader = React.useRef<DCVBarcodeReader|undefined>();
   React.useEffect(() => {
